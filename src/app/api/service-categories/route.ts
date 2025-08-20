@@ -26,13 +26,11 @@ export async function GET(request: NextRequest) {
         {
           name: {
             contains: search,
-            mode: "insensitive",
           },
         },
         {
           description: {
             contains: search,
-            mode: "insensitive",
           },
         },
       ];
@@ -87,7 +85,6 @@ export async function POST(request: NextRequest) {
       where: {
         name: {
           equals: validatedData.name,
-          mode: "insensitive",
         },
       },
     });
@@ -125,7 +122,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json(
         {
           error: "Dados inválidos",
-          details: error.errors,
+          details: error.issues,
         },
         { status: 400 }
       );

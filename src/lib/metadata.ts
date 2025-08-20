@@ -69,8 +69,8 @@ export function createSEO(props: SEOProps = {}): Metadata {
     noIndex = false,
   } = props;
 
-  const finalTitle = title ? `${title} | Serviços Profissionais` : defaultMetadata.title;
-  const finalDescription = description || defaultMetadata.description;
+  const finalTitle = title ? `${title} | Serviços Profissionais` : defaultMetadata.title || 'Serviços Profissionais';
+  const finalDescription = description || defaultMetadata.description || 'Empresa especializada em prestação de serviços diversos de construção civil, elétrica e tecnologia.';
   const finalKeywords = keywords ? [...defaultMetadata.keywords!, ...keywords] : defaultMetadata.keywords;
 
   const metadata: Metadata = {
@@ -79,13 +79,21 @@ export function createSEO(props: SEOProps = {}): Metadata {
     description: finalDescription,
     keywords: finalKeywords,
     robots: {
-      ...defaultMetadata.robots,
       index: !noIndex,
       follow: !noIndex,
+      googleBot: {
+        index: !noIndex,
+        follow: !noIndex,
+        'max-video-preview': -1,
+        'max-image-preview': 'large',
+        'max-snippet': -1,
+      },
     },
     openGraph: {
-      ...defaultMetadata.openGraph,
-      type: ogType,
+      type: ogType as 'website' | 'article',
+      locale: 'pt_BR',
+      url: 'https://servicosprofissionais.com.br',
+      siteName: 'Serviços Profissionais',
       title: finalTitle,
       description: finalDescription,
       images: ogImage
@@ -94,10 +102,17 @@ export function createSEO(props: SEOProps = {}): Metadata {
               url: ogImage,
               width: 1200,
               height: 630,
-              alt: finalTitle,
+              alt: finalTitle as string,
             },
           ]
-        : defaultMetadata.openGraph?.images,
+        : [
+            {
+              url: '/hero-banner.jpg',
+              width: 1440,
+              height: 720,
+              alt: finalTitle as string,
+            },
+          ],
     },
     twitter: {
       ...defaultMetadata.twitter,

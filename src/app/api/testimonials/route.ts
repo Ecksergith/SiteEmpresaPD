@@ -29,7 +29,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Find user by email if provided
-    let user = null;
+    let user: any = null;
     if (email) {
       user = await db.user.findUnique({
         where: { email }

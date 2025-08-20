@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { db } from '@/lib/db';
-import { ZAI } from 'z-ai-web-dev-sdk';
+import ZAI from 'z-ai-web-dev-sdk';
 
 export async function POST(request: NextRequest) {
   try {
@@ -159,7 +159,10 @@ export async function GET(request: NextRequest) {
 
     const skip = (page - 1) * limit;
 
-    const where = status ? { status } : {};
+    const where: any = {};
+    if (status && ['PENDING', 'CONTACTED', 'QUOTED', 'ACCEPTED', 'REJECTED', 'COMPLETED'].includes(status)) {
+      where.status = status;
+    }
 
     const [quotes, total] = await Promise.all([
       db.quote.findMany({
